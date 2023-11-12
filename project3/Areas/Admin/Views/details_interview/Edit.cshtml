@@ -1,0 +1,179 @@
+﻿@model project3.Models.details_interview
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Create Interview
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="/Admin/Home/Index">Trang chủ</a>/ Nhập thông tin buổi phóng vấn.
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        @using (Html.BeginForm("Create", "details_interview", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.id)
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.applicantId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @*@Html.DropDownList("applicantId", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.EditorFor(model => model.applicantId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.applicantId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="box" id="box-1">
+                                    @{
+                                        Html.RenderPartial("AplSearch");
+                                    }
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.vacancyId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @*@Html.DropDownList("vacancyId", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.EditorFor(model => model.vacancyId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.vacancyId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="box" id="box-2">
+                                    @{
+                                        Html.RenderPartial("VacSearch");
+                                    }
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.interviewerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @*@Html.DropDownList("interviewerId", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.EditorFor(model => model.interviewerId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.interviewerId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="box" id="box-3">
+                                    @{
+                                        Html.RenderPartial("ItvSearch");
+                                    }
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.time, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.time, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @style = "width : auto;" } })
+                                        @Html.ValidationMessageFor(model => model.time, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.status, new List<SelectListItem> {
+                                            new SelectListItem { Value = "Selected",Text="Selected" },
+                                            new SelectListItem { Value = "Rejected",Text="Rejected" },
+                                            }, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Create" class="btn btn-default" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#applicantId').on('click', function () {
+            $('.box').hide(1300);
+            $('#box-1').show(1300);
+        });
+        $('#vacancyId').on('click', function () {
+            $('.box').hide(1300);
+            $('#box-2').show(1300);
+        });
+        $('.fa-times').on('click', function () {
+            $('.box').hide(1300);
+        });
+
+        var tblApl = document.getElementById("DataApplicant");
+        for (var i = 0; i < tblApl.rows.length; i++) {
+            tblApl.rows[i].onclick = function () {
+                var cells = this.children;
+                document.getElementsByName("applicantId")[0].value = cells[1].innerText;
+                document.getElementsByName("applicantId")[0].id = cells[0].innerText;
+                $('#box-1').hide(1500);
+            }
+        }
+
+        var tblVac = document.getElementById("DataVacancy");
+        for (var i = 0; i < tblVac.rows.length; i++) {
+            tblVac.rows[i].onclick = function () {
+                var cells = this.children;
+                document.getElementsByName("vacancyId")[0].value = cells[1].innerText;
+                document.getElementsByName("vacancyId")[0].id = cells[0].innerText;
+                $('#box-2').hide(1500);
+            }
+        }
+
+
+        $('#interviewerId').on('click', function () {
+            $('.box').hide(1300);
+            var SearchValue = $('[name="vacancyId"]').val();
+            var SetData = $('#DataInterviewer');
+
+            $.ajax({
+                type: "get",
+                data: { "SearchValue": SearchValue },
+                url: "/details_interview/AjaxSearchItv/",
+                /*contentType: "Html",*/
+                dataType: 'JSON',
+                traditional: true,
+                /*contentType: 'application/json; charset=utf-8',*/
+                success: function (result) {
+                    var rs = JSON.parse(result.data)
+                    SetData.html("");
+                    $('#box-3').show(1300);
+                    if (rs.result.length < 1) {
+                        SetData.append('<tr class="text-danger"><td colspan="3">There is no suitable interviewer</td></tr>')
+                    } else {
+                        $.each(rs.result, function (index, value) {
+                            var data = "<tr>" +
+                                "<td>" + value.id + "</td>" +
+                                "<td>" + value.user.name + "</td>" +
+                                "<td>" + value.user.email + "</td>" +
+                                "</tr>";
+                            SetData.append(data);
+                        })
+
+                        var tblItv = document.getElementById("DataInterviewer");
+                        for (var i = 0; i < tblItv.rows.length; i++) {
+                            tblItv.rows[i].onclick = function () {
+                                var cells = this.children;
+                                document.getElementsByName("interviewerId")[0].value = cells[1].innerText;
+                                document.getElementsByName("interviewerId")[0].id = cells[0].innerText;
+                                $('#box-3').hide(1500);
+                            }
+                        }
+                    }
+                }
+            });
+        })
+    });
+</script>

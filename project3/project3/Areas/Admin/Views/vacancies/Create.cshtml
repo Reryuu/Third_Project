@@ -1,0 +1,140 @@
+﻿@model project3.Models.vacancy
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    Vacancy
+}
+
+@section scripts{
+    <script>
+        const textarea = document.querySelectorAll("textarea");
+        textarea.forEach(function (Item) {
+            Item.addEventListener("keyup", e => {
+                Item.style.height = "63px";
+                let scHeight = e.target.scrollHeight;
+                Item.style.height = `${scHeight}px`;
+            });
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval");
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="/Admin/Home/Index">Trang chủ</a>/ Nhập thông tin vị trí ứng tuyển.
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-10">
+                        @using (Html.BeginForm("Create", "vacancies", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.endAt, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @*<input id="fromdate" type="datetime-local" name="endAt" />*@
+                                        @Html.EditorFor(model => model.endAt, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @style = "width : auto;" } })
+                                        @Html.ValidationMessageFor(model => model.endAt, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                @*<div class="form-group">
+                                        @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.status, new List<SelectListItem> {
+                                            new SelectListItem { Value = "Open",Text="Open" },
+                                            new SelectListItem { Value = "Close",Text="Close" },},
+                                            new { @class = "myselect" })
+                                            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.salary, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <span><input type="number" name="start" class="form-control" style="width:auto; display:inline-block;margin-right: 1.5%;" required>milions VND  <i class="fas fa-long-arrow-alt-right"></i> </span>
+                                        <span><input type="number" name="end" class="form-control" style="width:auto; display:inline-block;margin-right: 1.5%;" required>milions VND</span>
+                                        @*@Html.ValidationMessageFor(model => model.salary, "", new { @class = "text-danger" })*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.required, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.required, new { htmlAttributes = new { @class = "form-control", @style = "width:fit-content" } })
+                                        @Html.ValidationMessageFor(model => model.required, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.descriptionId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <div class="panel panel-default" style="background-color:whitesmoke;padding-bottom:10px">
+                                            <div class="des-part">
+                                                @Html.LabelFor(model => model.description.about, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.TextAreaFor(model => model.description.about)
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.description.about, "", new { @class = "text-danger", @style = "margin-left : 20%" })
+
+                                            <div class="des-part">
+                                                @Html.LabelFor(model => model.description.required, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.TextAreaFor(model => model.description.required)
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.description.required, "", new { @class = "text-danger", @style = "margin-left : 20%" })
+
+                                            <div class="des-part">
+                                                @Html.LabelFor(model => model.description.interests, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                @Html.TextAreaFor(model => model.description.interests)
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.description.interests, "", new { @class = "text-danger", @style = "margin-left : 20%" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.departmentId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("departmentId", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.departmentId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                        @Html.LabelFor(model => model.applicants_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.applicants_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.applicants_Id, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="btn btn-default">
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>

@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="project3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="applicant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="experience" Type="nvarchar" MaxLength="255" />
+    <Property Name="education" Type="nvarchar" MaxLength="100" />
+    <Property Name="skills" Type="nvarchar" MaxLength="255" />
+    <Property Name="status" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="createAt" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="department">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="description">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="about" Type="nvarchar" MaxLength="1000" />
+    <Property Name="required" Type="nvarchar" MaxLength="1000" />
+    <Property Name="interests" Type="nvarchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="details_interview">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="applicantId" Type="char" MaxLength="5" Nullable="false" />
+    <Property Name="vacancyId" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="interviewerId" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+    <Property Name="status" Type="char" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <EntityType Name="interviewer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="department_id" Type="char" MaxLength="4" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="test">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Data" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="type_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="tinyint" Nullable="false" />
+    <Property Name="type" Type="char" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="type_userId" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vacancy">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="endAt" Type="datetime" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="salary" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="required" Type="int" Nullable="false" />
+    <Property Name="descriptionId" Type="int" Nullable="false" />
+    <Property Name="departmentId" Type="char" MaxLength="4" Nullable="false" />
+    <Property Name="applicants_Id" Type="varchar" MaxLength="250" />
+  </EntityType>
+  <Association Name="FK_DepartmentInterviewer">
+    <End Role="department" Type="Self.department" Multiplicity="1" />
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="interviewer">
+        <PropertyRef Name="department_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DepartmentVacancy">
+    <End Role="department" Type="Self.department" Multiplicity="1" />
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vacancy">
+        <PropertyRef Name="departmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DescribeVacancy">
+    <End Role="description" Type="Self.description" Multiplicity="1" />
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="description">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vacancy">
+        <PropertyRef Name="descriptionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailsApplicant">
+    <End Role="applicant" Type="Self.applicant" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="applicant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="applicantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailsInterviewer">
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="interviewer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="interviewerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailsVacancy">
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vacancy">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="vacancyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_interviewer_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="interviewer">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserApplicant">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="applicant" Type="Self.applicant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="applicant">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Usertype">
+    <End Role="type_user" Type="Self.type_user" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="type_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="type_userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="project3ModelStoreContainer">
+    <EntitySet Name="applicant" EntityType="Self.applicant" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="department" EntityType="Self.department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="description" EntityType="Self.description" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="details_interview" EntityType="Self.details_interview" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="interviewer" EntityType="Self.interviewer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="test" EntityType="Self.test" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="type_user" EntityType="Self.type_user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vacancy" EntityType="Self.vacancy" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DepartmentInterviewer" Association="Self.FK_DepartmentInterviewer">
+      <End Role="department" EntitySet="department" />
+      <End Role="interviewer" EntitySet="interviewer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DepartmentVacancy" Association="Self.FK_DepartmentVacancy">
+      <End Role="department" EntitySet="department" />
+      <End Role="vacancy" EntitySet="vacancy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DescribeVacancy" Association="Self.FK_DescribeVacancy">
+      <End Role="description" EntitySet="description" />
+      <End Role="vacancy" EntitySet="vacancy" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailsApplicant" Association="Self.FK_DetailsApplicant">
+      <End Role="applicant" EntitySet="applicant" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailsInterviewer" Association="Self.FK_DetailsInterviewer">
+      <End Role="interviewer" EntitySet="interviewer" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailsVacancy" Association="Self.FK_DetailsVacancy">
+      <End Role="vacancy" EntitySet="vacancy" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_interviewer_user" Association="Self.FK_interviewer_user">
+      <End Role="user" EntitySet="user" />
+      <End Role="interviewer" EntitySet="interviewer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserApplicant" Association="Self.FK_UserApplicant">
+      <End Role="user" EntitySet="user" />
+      <End Role="applicant" EntitySet="applicant" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Usertype" Association="Self.FK_Usertype">
+      <End Role="type_user" EntitySet="type_user" />
+      <End Role="user" EntitySet="user" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

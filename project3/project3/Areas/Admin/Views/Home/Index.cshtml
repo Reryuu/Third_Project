@@ -1,0 +1,276 @@
+﻿@model project3.Areas.Admin.Models.Home
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section header {
+    Dashboard
+}
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6 ">
+                <div class="card sbg1">
+                    <!-- small box -->
+                    <div class="small-box ">
+                        <div class="inner">
+                            <p>Number of vacancies</p>
+                        </div>
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <h1>@Html.DisplayFor(model => model.vacancies.Count)</h1>
+                            <div class="icon seofct-icon"><i class="fas fa-briefcase"></i></div>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6 ">
+                <div class="card sbg2">
+                    <!-- small box -->
+                    <div class="small-box ">
+                        <div class="inner">
+                            <p>Number of departments</p>
+                        </div>
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <h1>@Html.DisplayFor(model => model.departments.Count)</h1>
+                            <div class="icon seofct-icon"><i class="fas fa-users"></i></div>
+                        </div>
+                        <a href="#" class="small-box-footer" style="color:#fff">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6 ">
+                <div class="card sbg3">
+                    <!-- small box -->
+                    <div class="small-box ">
+                        <div class="inner">
+                            <p>Number of employees</p>
+                        </div>
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <h1>@Html.DisplayFor(model => model.employees.Count)</h1>
+                            <div class="icon seofct-icon"><i class="fas fa-user-tie"></i></div>
+                        </div>
+                        <a href="#" class="small-box-footer" style="color:#fff">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6 ">
+                <div class="card sbg4">
+                    <!-- small box -->
+                    <div class="small-box">
+                        <div class="inner">
+                            <p>Applicant</p>
+                        </div>
+                        <div class="p-4 d-flex justify-content-between align-items-center">
+                            <h1>@Html.DisplayFor(model => model.applicants.Count)</h1>
+                            <div class="icon seofct-icon"><i class="fas fa-user-md"></i></div>
+                        </div>
+                        <a href="#" class="small-box-footer" style="color:#fff">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- overview area start -->
+        <div class="row">
+            <div class="col-xl-9 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="header-title mb-0"> </h4>
+                        </div>
+                        <div id="verview-shart"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- progress area start -->
+            <div class="col-xl-9 col-lg-4">
+                <div class="card" style="padding:1.5rem!important">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="header-title mb-0">Selected Applicants</h4>
+                        </div>
+                        <div id="progress">
+                            @*<div class="progress">
+
+                                <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span>abcxyz</span>
+                            <div class="progress">
+
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <br>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <br>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <br>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- progress area end -->
+        </div>
+    </div>
+</section>
+
+<style>
+    #page-wrapper {
+        background-color: #F3F8FB;
+    }
+
+    p {
+        margin: 10px;
+    }
+
+    .card {
+        position: relative;
+        background: #fff;
+        border: none;
+        border-radius: 5px;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        margin-bottom: 4rem;
+    }
+
+    .sbg1 {
+        background: linear-gradient( 159deg, rgb(77, 77, 253) 0%, rgb(108, 143, 234) 100%);
+    }
+
+    .sbg2 {
+        background: linear-gradient( 159deg, rgb(5, 176, 133) 0%, rgb(27, 212, 166) 59%);
+    }
+
+    .sbg3 {
+        background: linear-gradient( 31deg, rgb(254, 208, 63) 0%, rgb(230, 190, 63) 110%)
+    }
+
+    .sbg4 {
+        background: linear-gradient( 152deg, rgb(216, 88, 79) 0%, rgb(243, 140, 140) 100%);
+    }
+
+    .p-4 {
+        padding: 1.5rem !important;
+    }
+
+    .align-items-center {
+        -webkit-box-align: center !important;
+        -ms-flex-align: center !important;
+        align-items: center !important;
+    }
+
+    .justify-content-between {
+        -webkit-box-pack: justify !important;
+        -ms-flex-pack: justify !important;
+        justify-content: space-between !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .seofct-icon i {
+        font-size: 52px;
+        margin-right: 20px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    [class^="ti-"], [class*=" ti-"] {
+        font-family: 'themify';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .inner > p {
+        font-size: large;
+        color: #fff;
+    }
+
+    .small-box > .small-box-footer {
+        background-color: rgba(0,0,0,.1);
+        display: block;
+        padding: 3px 0;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("GetData_Applicant", function (data) {
+            var Names = []
+            var Qts = []
+            for (var i = 0; i < data.length; i++) {
+                Names.push(data[i].name);
+                Qts.push(data[i].count);
+            }
+
+            Highcharts.chart('verview-shart', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Monthly Recap Report'
+                },
+                xAxis: {
+                    categories: Names
+                },
+                yAxis: {
+                    title: {
+                        text: 'Number of applicants'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                    name: 'Applying',
+                    data: Qts
+                }]
+            });
+        });
+
+        $.getJSON("GetData_Vacancy", function (result) {
+            var rs = JSON.parse(result.data)
+            var Chart = $('#progress');
+            Chart.html("");
+            var data = rs.result;
+            console.log(data[0].applicants_Id.split(',').length)
+            console.log(data[0].required)
+            var row_1 = '<span>' + data[0].title + '</span><div class="progress"><div class="progress-bar" role="progressbar" style="width:' + data[0].applicants_Id.split(',').length / data[0].required * 100 + '%' + '" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">' + data[0].applicants_Id.split(',').length + ' of ' + data[0].required + '</div></div>';
+            Chart.append(row_1);                              
+        });
+    });
+</script>

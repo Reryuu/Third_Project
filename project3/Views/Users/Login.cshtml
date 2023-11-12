@@ -1,0 +1,82 @@
+﻿@model project3.Models.employee
+
+@{
+    ViewBag.Title = "Login";
+}
+@section scripts{
+    <script>
+        $(function () {
+            //$('#AlertBox').removeClass('hide');
+            //$('#AlertBox').delay(5000).fadeTo(2000, 500).slideUp(500);
+            $('.alert').addClass("show");
+            $('.alert').removeClass("hide");
+            $('.alert').addClass("showAlert");
+            setTimeout(function () {
+                $('.alert').removeClass("show");
+                $('.alert').addClass("hide");
+            }, 5000);
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval");
+}
+<h1 style="padding-top:20px">
+    <span>T</span>uyển
+    <span>D</span>ụng
+    <span>V</span>iệc
+    <span>L</span>àm
+</h1>
+
+<div class="sub-main-w3">
+    @using (Html.BeginForm("Login", "Users", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-style-agile">
+            <label>
+                Username
+                <i class="fas fa-user"></i>
+            </label>
+            @Html.TextBoxFor(model => model.username, new { @placeholder = "Username", required = "required", title = "User name is requried" })
+            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger", @style = "padding-top: 10px" })
+        </div>
+
+
+        <div class="form-style-agile">
+            <label>
+                Password
+                <i class="fas fa-unlock-alt"></i>
+            </label>
+            @Html.PasswordFor(model => model.password, new { @placeholder = "Password", required = "required", title = "Password is requried" })
+            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger", @style = "padding-top: 10px" })
+        </div>
+
+        <!-- checkbox -->
+        <div class="wthree-text">
+            <ul>
+                <li>
+                    <!-- switch -->
+                    <div class="checkout-w3l">
+                        <div class="demo5">
+                            <div class="switch demo3">
+                                <input type="checkbox">
+                                <label>
+                                    <i></i>
+                                </label>
+                            </div>
+                        </div>
+                        <a href="#">Stay Signed In</a>
+                    </div>
+                    <!-- //checkout -->
+                </li>
+                <li>
+                    <a href="#">Forgot Password?</a>
+                </li>
+            </ul>
+            <br /><br />
+            <a href="@Url.Action("Register","Home")">New account</a>
+        </div>
+        <input type="submit" name="submit" value="Log In" class="btn btn-default" />
+    }
+</div>
+

@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="project3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="applicant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="experience" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="education" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="skills" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="status" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="createAt" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsApplicant" FromRole="applicant" ToRole="details_interview" />
+    <NavigationProperty Name="user" Relationship="Self.FK_UserApplicant" FromRole="applicant" ToRole="user" />
+  </EntityType>
+  <EntityType Name="department">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="interviewers" Relationship="Self.FK_DepartmentInterviewer" FromRole="department" ToRole="interviewer" />
+    <NavigationProperty Name="vacancies" Relationship="Self.FK_DepartmentVacancy" FromRole="department" ToRole="vacancy" />
+  </EntityType>
+  <EntityType Name="description">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="about" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="required" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="interests" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="vacancies" Relationship="Self.FK_DescribeVacancy" FromRole="description" ToRole="vacancy" />
+  </EntityType>
+  <EntityType Name="details_interview">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="applicantId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="vacancyId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="interviewerId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="applicant" Relationship="Self.FK_DetailsApplicant" FromRole="details_interview" ToRole="applicant" />
+    <NavigationProperty Name="interviewer" Relationship="Self.FK_DetailsInterviewer" FromRole="details_interview" ToRole="interviewer" />
+    <NavigationProperty Name="vacancy" Relationship="Self.FK_DetailsVacancy" FromRole="details_interview" ToRole="vacancy" />
+  </EntityType>
+  <EntityType Name="interviewer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="department_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="department" Relationship="Self.FK_DepartmentInterviewer" FromRole="interviewer" ToRole="department" />
+    <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsInterviewer" FromRole="interviewer" ToRole="details_interview" />
+    <NavigationProperty Name="user" Relationship="Self.FK_interviewer_user" FromRole="interviewer" ToRole="user" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="test">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Data" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="type_user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Byte" Nullable="false" />
+    <Property Name="type" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="users" Relationship="Self.FK_Usertype" FromRole="type_user" ToRole="user" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="type_userId" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="applicants" Relationship="Self.FK_UserApplicant" FromRole="user" ToRole="applicant" />
+    <NavigationProperty Name="interviewers" Relationship="Self.FK_interviewer_user" FromRole="user" ToRole="interviewer" />
+    <NavigationProperty Name="type_user" Relationship="Self.FK_Usertype" FromRole="user" ToRole="type_user" />
+  </EntityType>
+  <EntityType Name="vacancy">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="endAt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="salary" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="required" Type="Int32" Nullable="false" />
+    <Property Name="descriptionId" Type="Int32" Nullable="false" />
+    <Property Name="departmentId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="applicants_Id" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="department" Relationship="Self.FK_DepartmentVacancy" FromRole="vacancy" ToRole="department" />
+    <NavigationProperty Name="description" Relationship="Self.FK_DescribeVacancy" FromRole="vacancy" ToRole="description" />
+    <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsVacancy" FromRole="vacancy" ToRole="details_interview" />
+  </EntityType>
+  <Association Name="FK_DetailsApplicant">
+    <End Role="applicant" Type="Self.applicant" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="applicant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="applicantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserApplicant">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="applicant" Type="Self.applicant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="applicant">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DepartmentInterviewer">
+    <End Role="department" Type="Self.department" Multiplicity="1" />
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="interviewer">
+        <PropertyRef Name="department_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DepartmentVacancy">
+    <End Role="department" Type="Self.department" Multiplicity="1" />
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="department">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vacancy">
+        <PropertyRef Name="departmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DescribeVacancy">
+    <End Role="description" Type="Self.description" Multiplicity="1" />
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="description">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="vacancy">
+        <PropertyRef Name="descriptionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailsInterviewer">
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="interviewer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="interviewerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailsVacancy">
+    <End Role="vacancy" Type="Self.vacancy" Multiplicity="1" />
+    <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vacancy">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="details_interview">
+        <PropertyRef Name="vacancyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_interviewer_user">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="interviewer" Type="Self.interviewer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="interviewer">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Usertype">
+    <End Role="type_user" Type="Self.type_user" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="type_user">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="type_userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="project3Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="applicants" EntityType="Self.applicant" />
+    <EntitySet Name="departments" EntityType="Self.department" />
+    <EntitySet Name="descriptions" EntityType="Self.description" />
+    <EntitySet Name="details_interview" EntityType="Self.details_interview" />
+    <EntitySet Name="interviewers" EntityType="Self.interviewer" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="tests" EntityType="Self.test" />
+    <EntitySet Name="type_user" EntityType="Self.type_user" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <EntitySet Name="vacancies" EntityType="Self.vacancy" />
+    <AssociationSet Name="FK_DetailsApplicant" Association="Self.FK_DetailsApplicant">
+      <End Role="applicant" EntitySet="applicants" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserApplicant" Association="Self.FK_UserApplicant">
+      <End Role="user" EntitySet="users" />
+      <End Role="applicant" EntitySet="applicants" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DepartmentInterviewer" Association="Self.FK_DepartmentInterviewer">
+      <End Role="department" EntitySet="departments" />
+      <End Role="interviewer" EntitySet="interviewers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DepartmentVacancy" Association="Self.FK_DepartmentVacancy">
+      <End Role="department" EntitySet="departments" />
+      <End Role="vacancy" EntitySet="vacancies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DescribeVacancy" Association="Self.FK_DescribeVacancy">
+      <End Role="description" EntitySet="descriptions" />
+      <End Role="vacancy" EntitySet="vacancies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailsInterviewer" Association="Self.FK_DetailsInterviewer">
+      <End Role="interviewer" EntitySet="interviewers" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailsVacancy" Association="Self.FK_DetailsVacancy">
+      <End Role="vacancy" EntitySet="vacancies" />
+      <End Role="details_interview" EntitySet="details_interview" />
+    </AssociationSet>
+    <AssociationSet Name="FK_interviewer_user" Association="Self.FK_interviewer_user">
+      <End Role="user" EntitySet="users" />
+      <End Role="interviewer" EntitySet="interviewers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Usertype" Association="Self.FK_Usertype">
+      <End Role="type_user" EntitySet="type_user" />
+      <End Role="user" EntitySet="users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

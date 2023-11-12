@@ -1,0 +1,58 @@
+﻿@model project3.Models.details_interview
+<h3 style="font-weight:600;color:cornflowerblue;font-family:sans-serif;display:inline-block">Choose Interviewer</h3>
+<p class="text-right"><i class="fas fa-times" style="display:inline-block"></i></p>
+<hr />
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.employee.id)</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.employee.display_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.employee.email)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="DataInterviewer">
+            @*@if (ViewBag.interviewerId != null)
+            {
+                foreach (var item in ViewBag.interviewerId)
+                {
+                    <tr id="row_@item.id">
+                        <td>
+                            @item.id
+                        </td>
+                        <td>
+                            @item.user.name
+                        </td>
+                        <td>
+                            @item.user.email
+                        </td>
+                    </tr>
+                }
+            }*@
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var tblItv = document.getElementById("DataInterviewer");
+        for (var i = 0; i < tblItv.rows.length; i++) {
+            tblItv.rows[i].onclick = function () {
+                var cells = this.children;
+                document.getElementById("employeeId").value = cells[1].innerText;
+                document.querySelector("[name='emp']").value = cells[0].innerText;
+                $('#box-3').hide(1500);
+            }
+        }
+    })
+</script>
+
+<style>
+    tbody tr:hover {
+        cursor: pointer;
+    }
+</style>

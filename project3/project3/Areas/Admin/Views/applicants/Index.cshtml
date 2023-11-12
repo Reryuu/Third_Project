@@ -1,0 +1,117 @@
+﻿@model PagedList.IPagedList<project3.Models.applicant>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header {
+    Applicant
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách ứng viên
+            </div>
+
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                @using (Html.BeginForm("Index", "applicants", FormMethod.Get))
+                {
+                    <div class="row form-group">
+                        <div class="col-lg-12">
+                            <div class="col-md-4">
+                                <input type="text" value="@ViewBag.search" class="form-control" name="search" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="submit" class="btn btn-success" value="Tìm kiếm" />
+                                @*<a class="btn btn-primary" href="/Admin/applicants/Create">Thêm mới</a>*@
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().id)
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.First().display_name)*@
+                                    @*@Html.ActionLink("applicants", "Index", new { SortOrder = "Name", @style = "decoration:none" })*@
+                                    <a style="text-decoration:none" href="@Url.Action("Index","applicants", new { SortOrder = ViewBag.NameSortParm})">Applicants @*<i class="fas fa-sort-alpha-down-alt"></i>*@</a>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().email)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().phone)
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.First().status)*@
+                                    @Html.ActionLink("Status", "Index", new { SortOrder = ViewBag.StatusSortParm, @style = "decoration:none" })
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().createAt)
+                                </th>
+                                <th>Chi tiết</th>
+                                <th>Chặn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr id="row_@item.id">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.display_name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.phone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.createAt)
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-mini btn-info icon-edit bigger-10" href="/Admin/applicants/Details/@item.id"><i class="fas fa-info-circle"></i></a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-mini btn-info icon-edit bigger-10" href="/Admin/applicants/Banned/@item.id"><i class="fas fa-ban"></i></a>
+                                    </td>
+                                    @*<td><a href="#" class="btn-active" data-id="@item.id">@Html.Raw(item ? "<strong>Kích hoạt</strong>" : "Khoá")</a></td>*@
+                                    @*<td>
+                                             <a class="btn btn-primary" href="/Admin/vacancies/Edit">Sửa</a>
+                                             |
+                                             @Ajax.ActionLink("Xoá", "Delete", new { @id = item.ID }, new AjaxOptions
+                                        {
+                                            Confirm = "Bạn có muốn xoá bản ghi này?",
+                                            OnComplete = "$('#row_" + @item.ID + "').remove()",
+                                            HttpMethod = "Delete"
+                                        })
+                                         </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, i => Url.Action("Index", "applicants", new { i }))
+</div>

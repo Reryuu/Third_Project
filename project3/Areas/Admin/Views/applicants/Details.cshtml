@@ -1,0 +1,70 @@
+﻿@model project3.Models.applicant
+<link rel="stylesheet" type="text/css" href="~/styles/1.css">
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Details
+}
+
+<div class="main">
+    <div class="top-section">
+        <img src="@Url.Content("~/images/" + Model.image)" class="profile" />
+        <p class="p1">@Html.DisplayFor(model => model.display_name)</p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-div-4">
+        <div class="content-box">
+            <p class="head">Contact</p>
+            <p ><i class="fa fa-phone" aria-hidden="true"></i> &nbsp;&nbsp;@Html.DisplayFor(model => model.phone)</p>
+            <p ><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;&nbsp;@Html.DisplayFor(model => model.email)</p>
+            <p ><i class="fa fa-home" aria-hidden="true"></i> &nbsp;&nbsp;Viet Nam</p>
+
+
+            <br />
+            <p class="head">my skills</p>
+            <p >
+                @Html.DisplayFor(model => model.skills)
+            </p>
+
+            @*<p class="head">awards</p>
+                <p class="p3">CSS Design Awards</p>
+                <p class="p3">D&AD Awards</p>
+                <p class="p3">CSS Winner Awards</p>
+                <p class="p3">The Shorty Awards</p>
+                <p class="p3">Awwwards</p>*@
+
+            <br />
+            <p class="head">Languages</p>
+            <p >VietNamese</p>
+            <p >English</p>
+        </div>
+    </div>
+    <div class="line"></div>
+    <div class="col-div-8">
+        <div class="content-box">
+            <p class="head">target</p>
+            <p class="p3">
+                <span style="white-space: pre-line">@Model.target</span>
+            </p>
+            <br />
+            <p class="head">EXPERIENCE</p>
+            <p class="p-4">
+                <span style="white-space: pre-line">@Model.experience</span>
+            </p>
+            <br />
+
+            <p class="head">Education</p>
+            <span style="white-space: pre-line">@Model.education</span>     
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    
+</div>
+<p class="btn btn-default">
+    @Html.ActionLink("Back to List", "Index")
+</p>

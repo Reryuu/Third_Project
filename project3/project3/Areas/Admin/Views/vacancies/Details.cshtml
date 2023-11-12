@@ -1,0 +1,55 @@
+﻿@model project3.Models.vacancy
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Details
+}
+
+<div class="container tab-content clearfix">
+    <div class="box-white tab-pane active" id="tab-info">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 job-data" id="col-job-left">
+                <h2>Mô tả công việc</h2>
+                <div class="content-tab">
+                    <span style="white-space: pre-line">@Model.description.about</span>
+                </div>
+                <h2>Yêu cầu ứng viên</h2>
+                <div class="content-tab">
+                    <span style="white-space: pre-line">@Model.description.required</span>
+                </div>
+                <h2>Quyền lợi được hưởng</h2>
+                <div class="content-tab">
+                    <span style="white-space: pre-line">@Model.description.interests</span>
+                </div>
+                ==========================================================================================================================================
+            </div>
+            <div class="box-info-job">
+                <h2>
+                    <b>Thông Tin Tuyển Dụng</b>
+                </h2>
+                <div class="job-info-item">
+                    <strong>Mức lương: </strong>
+                    <span>@Html.DisplayFor(model => model.salary)</span>
+                </div>
+                <div class="job-info-item">
+                    <strong>Số lượng cần tuyển: </strong>
+                    <span>@Html.DisplayFor(model => model.required) người</span>
+                </div>
+                <div class="job-info-item">
+                    <strong>Chức vụ: </strong>
+                    <span>Nhân viên</span>
+                </div>
+                <div class="job-info-item">
+                    <strong>Yêu cầu giới tính: </strong> <span>Không yêu cầu</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="btn btn-default" >
+    @Html.ActionLink("Back to List", "Index" )
+</p>

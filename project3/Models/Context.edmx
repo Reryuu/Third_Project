@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="project3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="applicant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="experience" Type="nvarchar" MaxLength="255" />
+          <Property Name="education" Type="nvarchar" MaxLength="100" />
+          <Property Name="skills" Type="nvarchar" MaxLength="255" />
+          <Property Name="target" Type="nvarchar" MaxLength="255" />
+          <Property Name="status" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="createAt" Type="date" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="image" Type="varchar" MaxLength="100" />
+          <Property Name="username" Type="varchar" MaxLength="255" />
+          <Property Name="password" Type="varchar" MaxLength="255" />
+          <Property Name="display_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="description">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="about" Type="nvarchar" MaxLength="1000" />
+          <Property Name="required" Type="nvarchar" MaxLength="1000" />
+          <Property Name="interests" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="details_interview">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="applicantId" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="vacancyId" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="employeeId" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="char" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="department_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" />
+          <Property Name="password" Type="varchar" MaxLength="255" />
+          <Property Name="display_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="vacancy">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="endAt" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="salary" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="required" Type="int" Nullable="false" />
+          <Property Name="descriptionId" Type="int" Nullable="false" />
+          <Property Name="departmentId" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="applicants_Id" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK_DepartmentEmployees">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DepartmentVacancy">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vacancy">
+              <PropertyRef Name="departmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DescribeVacancy">
+          <End Role="description" Type="Self.description" Multiplicity="1" />
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="description">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vacancy">
+              <PropertyRef Name="descriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailsApplicant">
+          <End Role="applicant" Type="Self.applicant" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="applicant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="applicantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailsInterviewer">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="employeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailsVacancy">
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vacancy">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="vacancyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="project3ModelStoreContainer">
+          <EntitySet Name="applicant" EntityType="Self.applicant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="department" EntityType="Self.department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="description" EntityType="Self.description" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="details_interview" EntityType="Self.details_interview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vacancy" EntityType="Self.vacancy" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DepartmentEmployees" Association="Self.FK_DepartmentEmployees">
+            <End Role="department" EntitySet="department" />
+            <End Role="employee" EntitySet="employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DepartmentVacancy" Association="Self.FK_DepartmentVacancy">
+            <End Role="department" EntitySet="department" />
+            <End Role="vacancy" EntitySet="vacancy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DescribeVacancy" Association="Self.FK_DescribeVacancy">
+            <End Role="description" EntitySet="description" />
+            <End Role="vacancy" EntitySet="vacancy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailsApplicant" Association="Self.FK_DetailsApplicant">
+            <End Role="applicant" EntitySet="applicant" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailsInterviewer" Association="Self.FK_DetailsInterviewer">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailsVacancy" Association="Self.FK_DetailsVacancy">
+            <End Role="vacancy" EntitySet="vacancy" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="project3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="applicant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="experience" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="education" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="skills" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="target" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="createAt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="display_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsApplicant" FromRole="applicant" ToRole="details_interview" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="employees" Relationship="Self.FK_DepartmentEmployees" FromRole="department" ToRole="employee" />
+          <NavigationProperty Name="vacancies" Relationship="Self.FK_DepartmentVacancy" FromRole="department" ToRole="vacancy" />
+        </EntityType>
+        <EntityType Name="description">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="about" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="required" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="interests" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="vacancies" Relationship="Self.FK_DescribeVacancy" FromRole="description" ToRole="vacancy" />
+        </EntityType>
+        <EntityType Name="details_interview">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="applicantId" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="vacancyId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="employeeId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="25" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="applicant" Relationship="Self.FK_DetailsApplicant" FromRole="details_interview" ToRole="applicant" />
+          <NavigationProperty Name="employee" Relationship="Self.FK_DetailsInterviewer" FromRole="details_interview" ToRole="employee" />
+          <NavigationProperty Name="vacancy" Relationship="Self.FK_DetailsVacancy" FromRole="details_interview" ToRole="vacancy" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="department_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="display_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK_DepartmentEmployees" FromRole="employee" ToRole="department" />
+          <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsInterviewer" FromRole="employee" ToRole="details_interview" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="vacancy">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="endAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="salary" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="required" Type="Int32" Nullable="false" />
+          <Property Name="descriptionId" Type="Int32" Nullable="false" />
+          <Property Name="departmentId" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="applicants_Id" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK_DepartmentVacancy" FromRole="vacancy" ToRole="department" />
+          <NavigationProperty Name="description" Relationship="Self.FK_DescribeVacancy" FromRole="vacancy" ToRole="description" />
+          <NavigationProperty Name="details_interview" Relationship="Self.FK_DetailsVacancy" FromRole="vacancy" ToRole="details_interview" />
+        </EntityType>
+        <Association Name="FK_DetailsApplicant">
+          <End Role="applicant" Type="Self.applicant" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="applicant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="applicantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DepartmentEmployees">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="employee">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DepartmentVacancy">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vacancy">
+              <PropertyRef Name="departmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DescribeVacancy">
+          <End Role="description" Type="Self.description" Multiplicity="1" />
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="description">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vacancy">
+              <PropertyRef Name="descriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailsInterviewer">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="employeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailsVacancy">
+          <End Role="vacancy" Type="Self.vacancy" Multiplicity="1" />
+          <End Role="details_interview" Type="Self.details_interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vacancy">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="details_interview">
+              <PropertyRef Name="vacancyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="project3Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="applicants" EntityType="Self.applicant" />
+          <EntitySet Name="departments" EntityType="Self.department" />
+          <EntitySet Name="descriptions" EntityType="Self.description" />
+          <EntitySet Name="details_interview" EntityType="Self.details_interview" />
+          <EntitySet Name="employees" EntityType="Self.employee" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="vacancies" EntityType="Self.vacancy" />
+          <AssociationSet Name="FK_DetailsApplicant" Association="Self.FK_DetailsApplicant">
+            <End Role="applicant" EntitySet="applicants" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DepartmentEmployees" Association="Self.FK_DepartmentEmployees">
+            <End Role="department" EntitySet="departments" />
+            <End Role="employee" EntitySet="employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DepartmentVacancy" Association="Self.FK_DepartmentVacancy">
+            <End Role="department" EntitySet="departments" />
+            <End Role="vacancy" EntitySet="vacancies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DescribeVacancy" Association="Self.FK_DescribeVacancy">
+            <End Role="description" EntitySet="descriptions" />
+            <End Role="vacancy" EntitySet="vacancies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailsInterviewer" Association="Self.FK_DetailsInterviewer">
+            <End Role="employee" EntitySet="employees" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailsVacancy" Association="Self.FK_DetailsVacancy">
+            <End Role="vacancy" EntitySet="vacancies" />
+            <End Role="details_interview" EntitySet="details_interview" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="project3ModelStoreContainer" CdmEntityContainer="project3Entities">
+          <EntitySetMapping Name="applicants">
+            <EntityTypeMapping TypeName="project3Model.applicant">
+              <MappingFragment StoreEntitySet="applicant">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="experience" ColumnName="experience" />
+                <ScalarProperty Name="education" ColumnName="education" />
+                <ScalarProperty Name="skills" ColumnName="skills" />
+                <ScalarProperty Name="target" ColumnName="target" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="createAt" ColumnName="createAt" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="display_name" ColumnName="display_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="departments">
+            <EntityTypeMapping TypeName="project3Model.department">
+              <MappingFragment StoreEntitySet="department">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="descriptions">
+            <EntityTypeMapping TypeName="project3Model.description">
+              <MappingFragment StoreEntitySet="description">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="about" ColumnName="about" />
+                <ScalarProperty Name="required" ColumnName="required" />
+                <ScalarProperty Name="interests" ColumnName="interests" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="details_interview">
+            <EntityTypeMapping TypeName="project3Model.details_interview">
+              <MappingFragment StoreEntitySet="details_interview">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="applicantId" ColumnName="applicantId" />
+                <ScalarProperty Name="vacancyId" ColumnName="vacancyId" />
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employees">
+            <EntityTypeMapping TypeName="project3Model.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="display_name" ColumnName="display_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="project3Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vacancies">
+            <EntityTypeMapping TypeName="project3Model.vacancy">
+              <MappingFragment StoreEntitySet="vacancy">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="endAt" ColumnName="endAt" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="salary" ColumnName="salary" />
+                <ScalarProperty Name="required" ColumnName="required" />
+                <ScalarProperty Name="descriptionId" ColumnName="descriptionId" />
+                <ScalarProperty Name="departmentId" ColumnName="departmentId" />
+                <ScalarProperty Name="applicants_Id" ColumnName="applicants_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

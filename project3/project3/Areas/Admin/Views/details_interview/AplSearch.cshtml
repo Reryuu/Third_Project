@@ -1,0 +1,96 @@
+﻿@model project3.Models.details_interview
+<h3 style="font-weight:600;color:cornflowerblue;font-family:sans-serif;display:inline-block">Choose Applicant</h3>
+<p class="text-right"><i class="fas fa-times" style="display:inline-block"></i></p>
+<hr />
+<div class="row form-group">
+    <div class="col-lg-12">
+        <div class="col-md-4">
+            <input type="text" name="SearchValue" class="form-control" id="apl_value" />
+        </div>
+        <div class="col-md-4">
+            <input type="button" value="search" class="btn btn-success" id="search_apl" />
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.applicant.id)</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.applicant.display_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.applicant.email)
+                </th>
+            </tr>
+        </thead>
+        <tbody id="DataApplicant">
+            @foreach (var item in ViewBag.applicantId)
+            {
+                <tr id="row_@item.id">
+                    <td>
+                        @item.id
+                    </td>
+                    <td>
+                        @item.display_name
+                    </td>
+                    <td>
+                        @item.email
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#search_apl').click(function () {
+            var SearchValue = $("#apl_value").val();
+            var SetData = $('#DataApplicant ');
+
+            $.ajax({
+                type: "get",
+                data: { "SearchValue": SearchValue },
+                url: "AjaxSearchApl",
+                /*contentType: "Html",*/
+                dataType: 'JSON',
+                traditional: true,
+                /*contentType: 'application/json; charset=utf-8',*/
+                success: function (result) {
+                    var rs = JSON.parse(result.data)
+                    SetData.html("");
+                    if (rs.result.length < 1) {
+                        SetData.append('<tr class="text-danger"><td colspan="3">No result found</td></tr>')
+                    } else {
+                        $.each(rs.result, function (index, value) {
+                            var data = "<tr>" +
+                                "<td>" + value.id + "</td>" +
+                                "<td>" + value.display_name + "</td>" +
+                                "<td>" + value.email + "</td>" +
+                                "</tr>";
+                            SetData.append(data);
+                        })
+
+                        var tblApl = document.getElementById("DataApplicant");
+                        for (var i = 0; i < tblApl.rows.length; i++) {
+                            tblApl.rows[i].onclick = function () {
+                                var cells = this.children;
+                                document.getElementById("applicantId").value = cells[1].innerText;
+                                document.querySelector("[name='apl']").value = cells[0].innerText;
+                                $('#box-1').hide(1500);
+                            }
+                        }
+                    }
+                }
+            })
+        })
+    })
+</script>
+
+<style>
+    tbody tr:hover {
+        cursor: pointer;
+    }
+</style>
